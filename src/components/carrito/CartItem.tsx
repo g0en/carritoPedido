@@ -1,7 +1,8 @@
+import ArticuloInsumo from "../../entities/ArticuloInsumo";
 import ArticuloManufacturado from "../../entities/ArticuloManufacturado";
 interface Props{
     cantidad: number;
-    item : ArticuloManufacturado
+    item : ArticuloManufacturado | ArticuloInsumo
 }
 export function CartItem({cantidad, item}: Props) {
     return (

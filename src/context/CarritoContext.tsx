@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { PedidoDetalle } from '../entities/PedidoDetalle';
 import ArticuloManufacturado from '../entities/ArticuloManufacturado';
+import ArticuloInsumo from '../entities/ArticuloInsumo';
 
 interface CartContextType {
   cart: PedidoDetalle[];
@@ -30,14 +31,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     calcularTotalCarrito();
   }, [cart]);
 
-  const addCarrito = (product: ArticuloManufacturado) => {
+  const addCarrito = (product: ArticuloManufacturado | ArticuloInsumo) => {
     setCart(prevCart => {
       const itemIndex = prevCart.findIndex(item => item.articulo.id === product.id);
       if (itemIndex === -1) {
         // Si el producto no está en el carrito, lo agregamos con cantidad 1
         const newDetalle: PedidoDetalle = {
-          id: product.id,
-          eliminado: true,
+          id: null,
+          eliminado: false,
           cantidad: 1,
           subTotal: 0,
           articulo: product,

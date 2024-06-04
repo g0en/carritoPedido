@@ -4,9 +4,9 @@ import PreferenceMP from '../entities/PreferenceMP';
 
 
 export async function savePedido(pedido : Pedido){
-	let urlServer = 'http://localhost:8080/api/pedidos';
+	let urlServer = 'http://localhost:8080/pedido';
 	let method:string = "POST";
-	if(pedido && Number(pedido.id) > 0){
+	if(pedido && pedido.id !== null){
 		method = "PUT";
 	}
 	await fetch(urlServer, {

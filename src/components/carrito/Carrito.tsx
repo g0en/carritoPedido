@@ -2,7 +2,7 @@ import { useCarrito } from '../../hooks/useCarrito';
 import { CartItem } from './CartItem'; // Asegúrate de que la importación sea correcta
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { createPreferenceMP, savePedido } from '../../services/PedidoService';
-import { Pedido } from '../../entities/Pedido';
+import { FormaPago, Pedido, TipoEnvio } from '../../entities/Pedido';
 import { PedidoDetalle } from '../../entities/PedidoDetalle';
 import { useNavigate } from 'react-router-dom';
 import CheckoutMP from './CheckoutMP';
@@ -25,22 +25,21 @@ export function Carrito() {
 
     if (total > 0) {
       const pedido: Pedido = {
-        id: 0,
         eliminado: false,
         horaEstimadaFinalizacion: "",
         total: total,
         totalCosto: 0,
-        estado: "",
-        tipoEnvio: "",
-        formaPago: "",
-        fechaPedido: null,
+        estado: null,
+        tipoEnvio: TipoEnvio.DELIVERY,
+        formaPago: FormaPago.MERCADO_PAGO,
         sucursal: {
           id: 1,
           eliminado: false,
           nombre: ""
-
         },
-        pedidoDetalle: cart
+        pedidoDetalles: cart,
+        id: null,
+        fechaPedido: null
       }
       const response: PreferenceMP = await createPreferenceMP(pedido);
       console.log("Preference id: " + response.id);
@@ -53,30 +52,26 @@ export function Carrito() {
   }
 
   const save = async () => {
-
     const total = cart.reduce((acc: number, item: PedidoDetalle) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0)
-    console.log(total);
 
     if (total > 0) {
       const pedido: Pedido = {
-        id: 0,
+        id: null,
         eliminado: false,
         horaEstimadaFinalizacion: "",
         total: total,
         totalCosto: 0,
-        estado: "",
-        tipoEnvio: "",
-        formaPago: "",
+        estado: null,
+        tipoEnvio: TipoEnvio.TAKE_AWAY,
+        formaPago: FormaPago.EFECTIVO,
         fechaPedido: null,
         sucursal: {
           id: 1,
           eliminado: false,
           nombre: ""
-
         },
-        pedidoDetalle: cart
+        pedidoDetalles: cart
       }
-      console.log(pedido);
 
       await savePedido(pedido)
     } else {
@@ -86,7 +81,6 @@ export function Carrito() {
   const handleSave = () => {
     save()
     getPreferenceMP()
-
   }
   return (
     <>

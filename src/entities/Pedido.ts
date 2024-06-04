@@ -2,15 +2,33 @@ import { PedidoDetalle } from "./PedidoDetalle";
 import { Sucursal } from "./Sucursal";
 
 export interface Pedido {
-    id: number;
+    id: number | null;
     eliminado: boolean;
     horaEstimadaFinalizacion: string;
     total: number;
     totalCosto: number;
-    estado: string;
-    tipoEnvio: string;
-    formaPago: string;
-    fechaPedido : Date;
+    estado: Estado | null;
+    tipoEnvio: TipoEnvio | null;
+    formaPago: FormaPago | null;
+    fechaPedido: Date | null;
     sucursal: Sucursal;
-    pedidoDetalles : PedidoDetalle[]
+    pedidoDetalles: PedidoDetalle[]
+}
+
+export enum Estado {
+    PREPARACION,
+    PENDIENTE,
+    CANCELADO,
+    RECHAZADO,
+    ENTREGADO
+}
+
+export enum TipoEnvio {
+    DELIVERY,
+    TAKE_AWAY
+}
+
+export enum FormaPago {
+    EFECTIVO,
+    MERCADO_PAGO
 }
