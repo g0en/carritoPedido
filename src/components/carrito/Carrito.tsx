@@ -1,27 +1,27 @@
 import { useCarrito } from '../../hooks/useCarrito';
-import { CartItem } from './CartItem'; // Asegúrate de que la importación sea correcta
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { CartItem } from './CartItem';
+import { Button, Col, Container, Row, Dropdown, DropdownButton } from 'react-bootstrap';
 import { createPreferenceMP, savePedido } from '../../services/PedidoService';
-import { FormaPago, Pedido, TipoEnvio } from '../../entities/Pedido';
-import { PedidoDetalle } from '../../entities/PedidoDetalle';
+import { FormaPago, Pedido, TipoEnvio } from '../../types/Pedido';
 import { useNavigate } from 'react-router-dom';
 import CheckoutMP from './CheckoutMP';
 import PreferenceMP from '../../entities/PreferenceMP';
 import { useState } from 'react';
+import { DetallePedido } from '../../types/DetallePedido';
 
 export function Carrito() {
   const { cart, limpiarCarrito, totalPedido } = useCarrito();
   const [idPreference, setIdPreference] = useState<string>('');
+  const [tipoEnvio, setTipoEnvio] = useState<TipoEnvio | null>(null);
+  const [formaPago, setFormaPago] = useState<FormaPago | null>(null);
+  const navigate = useNavigate();
 
   const mostrarCarritoJSON = () => {
     console.log(cart);
-
   }
-  const navigate = useNavigate();
-
 
   const getPreferenceMP = async () => {
-    const total = cart.reduce((acc: number, item: PedidoDetalle) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0)
+    const total = cart.reduce((acc: number, item: DetallePedido) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0);
 
     if (total > 0) {
       const pedido: Pedido = {
@@ -35,12 +35,21 @@ export function Carrito() {
         sucursal: {
           id: 1,
           eliminado: false,
-          nombre: ""
+          nombre: "",
+          horarioApertura: '',
+          horarioCierre: '',
+          domicilio: null,
+          categorias: [],
+          promociones: []
         },
         detallePedidos: cart,
         id: null,
-        fechaPedido: null
-      }
+        fechaPedido: null,
+        domicilio: null,//TODO
+        factura: null,
+        cliente: null,//TODO
+        empleado: null//TODO
+      };
       const response: PreferenceMP = await createPreferenceMP(pedido);
       console.log("Preference id: " + response.id);
       if (response)
@@ -48,13 +57,12 @@ export function Carrito() {
     } else {
       alert("Agregue al menos un plato al carrito");
     }
-
   }
 
   const save = async () => {
-    const total = cart.reduce((acc: number, item: PedidoDetalle) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0)
+    const total = cart.reduce((acc: number, item: DetallePedido) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0);
 
-    if (total > 0) {
+    if (total > 0 && tipoEnvio !== null && formaPago !== null) {
       const pedido: Pedido = {
         id: null,
         eliminado: false,
@@ -62,27 +70,53 @@ export function Carrito() {
         total: total,
         totalCosto: 0,
         estado: null,
-        tipoEnvio: TipoEnvio.TAKE_AWAY,
-        formaPago: FormaPago.EFECTIVO,
+        tipoEnvio: tipoEnvio,
+        formaPago: formaPago,
         fechaPedido: null,
         sucursal: {
           id: 1,
           eliminado: false,
-          nombre: ""
+          nombre: "",
+          horarioApertura: '',
+          horarioCierre: '',
+          domicilio: null,
+          categorias: [],
+          promociones: []
         },
-        detallePedidos: cart
-      }
+        detallePedidos: cart,
+        domicilio: null,//TODO
+        factura: null,
+        cliente: null,//TODO
+        empleado: null//TODO
+      };
 
-      await savePedido(pedido)
+      await savePedido(pedido);
     } else {
-      alert("Agregue al menos un plato al carrito");
+      alert("Agregue al menos un plato al carrito y seleccione un tipo de envío y una forma de pago");
     }
   }
+
   const handleSave = () => {
-    
-    save()
-    //getPreferenceMP()
+    if (tipoEnvio !== null && formaPago !== null) {
+      save();
+    } else {
+      alert("Seleccione un tipo de envío y una forma de pago antes de finalizar el pedido");
+    }
   }
+
+  const handleTipoEnvioSelect = (tipo: TipoEnvio) => {
+    setTipoEnvio(tipo);
+    if (tipo === TipoEnvio.DELIVERY) {
+      setFormaPago(FormaPago.MERCADO_PAGO);
+    } else {
+      setFormaPago(null);
+    }
+  }
+
+  const handleFormaPagoSelect = (forma: FormaPago) => {
+    setFormaPago(forma);
+  }
+
   return (
     <>
       <Container>
@@ -111,8 +145,32 @@ export function Carrito() {
         </Row>
         <Row className='mt-3'>
           <Col><Button className='' variant='secondary' onClick={limpiarCarrito} title='Limpiar Todo'>Limpiar</Button></Col>
-          <Col><Button onClick={handleSave}>Finalizar Pedido</Button></Col>
+          <Col>
+            <Button onClick={handleSave}>Finalizar Pedido</Button>
+          </Col>
         </Row>
+
+        {cart.length > 0 && (
+          <>
+            <Row className='mt-3'>
+              <Col>
+                <DropdownButton id="dropdown-tipo-envio" title={tipoEnvio ? `Tipo de Envío: ${tipoEnvio}` : "Seleccione Tipo de Envío"}>
+                  <Dropdown.Item onClick={() => handleTipoEnvioSelect(TipoEnvio.TAKE_AWAY)}>Take Away</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleTipoEnvioSelect(TipoEnvio.DELIVERY)}>Delivery</Dropdown.Item>
+                </DropdownButton>
+              </Col>
+            </Row>
+
+            <Row className='mt-3'>
+              <Col>
+                <DropdownButton id="dropdown-forma-pago" title={formaPago ? `Forma de Pago: ${formaPago}` : "Seleccione Forma de Pago"}>
+                  <Dropdown.Item onClick={() => handleFormaPagoSelect(FormaPago.MERCADO_PAGO)}>Mercado Pago</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleFormaPagoSelect(FormaPago.EFECTIVO)} disabled={tipoEnvio === TipoEnvio.DELIVERY}>Efectivo</Dropdown.Item>
+                </DropdownButton>
+              </Col>
+            </Row>
+          </>
+        )}
 
         {idPreference && <CheckoutMP idPreference={idPreference}></CheckoutMP>}
 

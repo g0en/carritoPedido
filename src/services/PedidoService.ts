@@ -1,4 +1,4 @@
-import { Pedido } from '../entities/Pedido';
+import { Pedido } from '../types/Pedido';
 import PreferenceMP from '../entities/PreferenceMP';
 
 

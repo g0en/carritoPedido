@@ -1,10 +1,10 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
-import { PedidoDetalle } from '../entities/PedidoDetalle';
-import ArticuloManufacturado from '../entities/ArticuloManufacturado';
-import ArticuloInsumo from '../entities/ArticuloInsumo';
+import { DetallePedido } from '../types/DetallePedido';
+import ArticuloManufacturado from '../types/ArticuloManufacturado';
+import ArticuloInsumo from '../types/ArticuloInsumo';
 
 interface CartContextType {
-  cart: PedidoDetalle[];
+  cart: DetallePedido[];
   addCarrito: (product: ArticuloManufacturado) => void;
   removeCarrito: (product: ArticuloManufacturado) => void;
   removeItemCarrito: (product: ArticuloManufacturado) => void;
@@ -24,7 +24,7 @@ export const CartContext = createContext<CartContextType>({
 
 // Proveedor del contexto
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<PedidoDetalle[]>([]);
+  const [cart, setCart] = useState<DetallePedido[]>([]);
   const [totalPedido, setTotalPedido] = useState<number>(0);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const itemIndex = prevCart.findIndex(item => item.articulo.id === product.id);
       if (itemIndex === -1) {
         // Si el producto no está en el carrito, lo agregamos con cantidad 1
-        const newDetalle: PedidoDetalle = {
+        const newDetalle: DetallePedido = {
           id: null,
           eliminado: false,
           cantidad: 1,
@@ -68,7 +68,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           return null;
         }
         return detalle;
-      }).filter(detalle => detalle !== null) as PedidoDetalle[];
+      }).filter(detalle => detalle !== null) as DetallePedido[];
       return newCart;
     });
   };

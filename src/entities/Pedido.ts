@@ -8,10 +8,10 @@ export interface Pedido {
     total: number;
     totalCosto: number;
     estado: Estado | null;
-    tipoEnvio: TipoEnvio | null;
-    formaPago: FormaPago | null;
+    tipoEnvio: string | null;
+    formaPago: string | null;
     fechaPedido: Date | null;
-    sucursal: Sucursal;
+    sucursal?: Sucursal;
     detallePedidos: PedidoDetalle[]
 }
 
@@ -24,11 +24,11 @@ export enum Estado {
 }
 
 export enum TipoEnvio {
-    DELIVERY,
-    TAKE_AWAY
+    DELIVERY = "DELIVERY",
+    TAKE_AWAY = "TAKE_AWAY"
 }
 
 export enum FormaPago {
-    EFECTIVO,
-    MERCADO_PAGO
+    EFECTIVO = "EFECTIVO",
+    MERCADO_PAGO = "MERCADO_PAGO"
 }

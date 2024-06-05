@@ -1,5 +1,5 @@
-import ArticuloInsumo from "../../entities/ArticuloInsumo";
-import ArticuloManufacturado from "../../entities/ArticuloManufacturado";
+import ArticuloInsumo from "../../types/ArticuloInsumo";
+import ArticuloManufacturado from "../../types/ArticuloManufacturado";
 interface Props{
     cantidad: number;
     item : ArticuloManufacturado | ArticuloInsumo
