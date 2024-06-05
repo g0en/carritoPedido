@@ -2,7 +2,7 @@ import { useCarrito } from '../../hooks/useCarrito';
 import { CartItem } from './CartItem';
 import { Button, Col, Container, Row, Dropdown, DropdownButton } from 'react-bootstrap';
 import { createPreferenceMP, savePedido } from '../../services/PedidoService';
-import { FormaPago, Pedido, TipoEnvio } from '../../types/Pedido';
+import { FormaPago, Pedido, TipoEnvio, PedidoDto, Estado } from '../../types/Pedido';
 import { useNavigate } from 'react-router-dom';
 import CheckoutMP from './CheckoutMP';
 import PreferenceMP from '../../entities/PreferenceMP';
@@ -24,31 +24,16 @@ export function Carrito() {
     const total = cart.reduce((acc: number, item: DetallePedido) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0);
 
     if (total > 0) {
-      const pedido: Pedido = {
-        eliminado: false,
-        horaEstimadaFinalizacion: "",
-        total: total,
-        totalCosto: 0,
-        estado: null,
-        tipoEnvio: TipoEnvio.DELIVERY,
-        formaPago: FormaPago.MERCADO_PAGO,
-        sucursal: {
-          id: 1,
-          eliminado: false,
-          nombre: "",
-          horarioApertura: '',
-          horarioCierre: '',
-          domicilio: null,
-          categorias: [],
-          promociones: []
-        },
+      const pedido: PedidoDto = {
+        estado: Estado.PREPARACION,
+        tipoEnvio: tipoEnvio,
+        formaPago: formaPago,
+        domicilio: null,
+        sucursalId: 1,
+        clienteId: 1,
         detallePedidos: cart,
-        id: null,
-        fechaPedido: null,
-        domicilio: null,//TODO
-        factura: null,
-        cliente: null,//TODO
-        empleado: null//TODO
+        empleadoId: 1,
+        id: null
       };
       const response: PreferenceMP = await createPreferenceMP(pedido);
       console.log("Preference id: " + response.id);
@@ -63,31 +48,16 @@ export function Carrito() {
     const total = cart.reduce((acc: number, item: DetallePedido) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0);
 
     if (total > 0 && tipoEnvio !== null && formaPago !== null) {
-      const pedido: Pedido = {
-        id: null,
-        eliminado: false,
-        horaEstimadaFinalizacion: "",
-        total: total,
-        totalCosto: 0,
-        estado: null,
+      const pedido: PedidoDto = {
+        estado: Estado.PENDIENTE,
         tipoEnvio: tipoEnvio,
         formaPago: formaPago,
-        fechaPedido: null,
-        sucursal: {
-          id: 1,
-          eliminado: false,
-          nombre: "",
-          horarioApertura: '',
-          horarioCierre: '',
-          domicilio: null,
-          categorias: [],
-          promociones: []
-        },
+        domicilio: null,
+        sucursalId: 1,
+        clienteId: 1,
         detallePedidos: cart,
-        domicilio: null,//TODO
-        factura: null,
-        cliente: null,//TODO
-        empleado: null//TODO
+        empleadoId: 1,
+        id: null
       };
 
       await savePedido(pedido);

@@ -17,9 +17,20 @@ export  interface Pedido extends DataModel<Pedido> {
   domicilio: Domicilio | null; 
   sucursal: Sucursal | null; 
   factura: Factura | null; 
-  cliente: Cliente|null; 
+  clienteId: number; 
   detallePedidos: DetallePedido[]; 
   empleado: Empleado | null;
+}
+
+export interface PedidoDto extends DataModel<Pedido>{
+  estado: Estado;
+  tipoEnvio: TipoEnvio | null;
+  formaPago: FormaPago | null;
+  domicilio: Domicilio | null; 
+  sucursalId: number; 
+  clienteId: number; 
+  detallePedidos: DetallePedido[]; 
+  empleadoId: number ;
 }
 
 
