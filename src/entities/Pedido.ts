@@ -12,7 +12,7 @@ export interface Pedido {
     formaPago: FormaPago | null;
     fechaPedido: Date | null;
     sucursal: Sucursal;
-    pedidoDetalles: PedidoDetalle[]
+    detallePedidos: PedidoDetalle[]
 }
 
 export enum Estado {

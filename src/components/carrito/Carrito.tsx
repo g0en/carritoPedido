@@ -37,7 +37,7 @@ export function Carrito() {
           eliminado: false,
           nombre: ""
         },
-        pedidoDetalles: cart,
+        detallePedidos: cart,
         id: null,
         fechaPedido: null
       }
@@ -70,7 +70,7 @@ export function Carrito() {
           eliminado: false,
           nombre: ""
         },
-        pedidoDetalles: cart
+        detallePedidos: cart
       }
 
       await savePedido(pedido)
@@ -79,8 +79,9 @@ export function Carrito() {
     }
   }
   const handleSave = () => {
+    
     save()
-    getPreferenceMP()
+    //getPreferenceMP()
   }
   return (
     <>
@@ -110,7 +111,7 @@ export function Carrito() {
         </Row>
         <Row className='mt-3'>
           <Col><Button className='' variant='secondary' onClick={limpiarCarrito} title='Limpiar Todo'>Limpiar</Button></Col>
-          <Col><Button onClick={handleSave}>Comprar</Button></Col>
+          <Col><Button onClick={handleSave}>Finalizar Pedido</Button></Col>
         </Row>
 
         {idPreference && <CheckoutMP idPreference={idPreference}></CheckoutMP>}

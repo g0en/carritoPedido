@@ -48,6 +48,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Si el producto ya está en el carrito, incrementamos su cantidad
         const newCart = [...prevCart];
         newCart[itemIndex].cantidad += 1;
+        console.log(newCart);
         return newCart;
       }
     });
