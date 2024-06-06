@@ -2,8 +2,7 @@ import { useCarrito } from '../../hooks/useCarrito';
 import { CartItem } from './CartItem';
 import { Button, Col, Container, Row, Dropdown, DropdownButton } from 'react-bootstrap';
 import { createPreferenceMP, savePedido } from '../../services/PedidoService';
-import { FormaPago, Pedido, TipoEnvio, PedidoDto, Estado } from '../../types/Pedido';
-import { useNavigate } from 'react-router-dom';
+import { FormaPago, TipoEnvio, PedidoDto, Estado } from '../../types/Pedido';
 import CheckoutMP from './CheckoutMP';
 import PreferenceMP from '../../entities/PreferenceMP';
 import { useState } from 'react';
@@ -14,11 +13,6 @@ export function Carrito() {
   const [idPreference, setIdPreference] = useState<string>('');
   const [tipoEnvio, setTipoEnvio] = useState<TipoEnvio | null>(null);
   const [formaPago, setFormaPago] = useState<FormaPago | null>(null);
-  const navigate = useNavigate();
-
-  const mostrarCarritoJSON = () => {
-    console.log(cart);
-  }
 
   const getPreferenceMP = async () => {
     const total = cart.reduce((acc: number, item: DetallePedido) => acc + (item.cantidad * Number(item.articulo.precioVenta)), 0);
@@ -75,6 +69,7 @@ export function Carrito() {
   const handleSave = () => {
     if (tipoEnvio !== null && formaPago !== null) {
       save();
+      //getPreferenceMP();
     } else {
       alert("Seleccione un tipo de envío y una forma de pago antes de finalizar el pedido");
     }
@@ -148,7 +143,9 @@ export function Carrito() {
           </>
         )}
 
-        {idPreference && <CheckoutMP idPreference={idPreference}></CheckoutMP>}
+        {idPreference && (
+          <CheckoutMP idPreference={idPreference}></CheckoutMP>
+        )}
 
       </Container>
     </>

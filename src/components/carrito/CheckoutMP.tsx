@@ -1,25 +1,33 @@
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
-import { Row } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 
 interface Props {
     idPreference: string
 }
 function CheckoutMP({ idPreference }: Props) {
+    const [isVisible, setIsVisible] = useState(false);
 
-    //es la Public Key se utiliza generalmente en el frontend.
-    initMercadoPago(import.meta.env.VITE_SOME_KEY, { locale: 'es-AR' });
+    useEffect(() => {
+        initMercadoPago("TEST-749c0c7b-de56-4f89-ab1d-7caca80541f1", {
+            locale: "es-AR"
+        });
+        if (idPreference && idPreference !== "") {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    }, [idPreference]);
 
-    //redirectMode es optativo y puede ser self, blank o modal
     return (
-        <Row className='mt-5'>
-            <div className={idPreference ? 'divVisible' : 'divInvisible'}>
-                <Wallet initialization={{ preferenceId: idPreference, redirectMode: "blank" }} customization={{ texts: { valueProp: 'smart_option' } }} />
+        <>
+            <div className={isVisible ? "divVisible" : "divInvisible"}>
+                <Wallet
+                    initialization={{ preferenceId: idPreference, redirectMode: "blank" }}
+                    customization={{ texts: { valueProp: "smart_option" } }}
+                ></Wallet>
             </div>
-
-        </Row>
-
-    );
-
+        </>
+    )
 }
 
 export default CheckoutMP

@@ -1,4 +1,4 @@
-import { Pedido, PedidoDto } from '../types/Pedido';
+import { PedidoDto } from '../types/Pedido';
 import PreferenceMP from '../entities/PreferenceMP';
 
 
@@ -24,7 +24,7 @@ export async function savePedido(pedido : PedidoDto){
 }
 
 export async function createPreferenceMP(pedido?:PedidoDto){
-    let urlServer = 'http://localhost:8080/api/pedidos/create-preference-mp';
+    let urlServer = 'http://localhost:8080/mercadoPago/crearPreferenceMp';
 	let method:string = "POST";
     const response = await fetch(urlServer, {
 	  "method": method,
