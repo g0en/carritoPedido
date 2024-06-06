@@ -69,7 +69,9 @@ export function Carrito() {
   const handleSave = () => {
     if (tipoEnvio !== null && formaPago !== null) {
       save();
-      //getPreferenceMP();
+      if(formaPago === FormaPago.MERCADO_PAGO){
+        getPreferenceMP();
+      }
     } else {
       alert("Seleccione un tipo de envío y una forma de pago antes de finalizar el pedido");
     }
@@ -80,7 +82,7 @@ export function Carrito() {
     if (tipo === TipoEnvio.DELIVERY) {
       setFormaPago(FormaPago.MERCADO_PAGO);
     } else {
-      setFormaPago(null);
+      setFormaPago(FormaPago.EFECTIVO);
     }
   }
 
@@ -135,7 +137,7 @@ export function Carrito() {
             <Row className='mt-3'>
               <Col>
                 <DropdownButton id="dropdown-forma-pago" title={formaPago ? `Forma de Pago: ${formaPago}` : "Seleccione Forma de Pago"}>
-                  <Dropdown.Item onClick={() => handleFormaPagoSelect(FormaPago.MERCADO_PAGO)}>Mercado Pago</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleFormaPagoSelect(FormaPago.MERCADO_PAGO)} disabled={tipoEnvio === TipoEnvio.TAKE_AWAY}>Mercado Pago</Dropdown.Item>
                   <Dropdown.Item onClick={() => handleFormaPagoSelect(FormaPago.EFECTIVO)} disabled={tipoEnvio === TipoEnvio.DELIVERY}>Efectivo</Dropdown.Item>
                 </DropdownButton>
               </Col>
