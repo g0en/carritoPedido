@@ -9,3 +9,12 @@ export default interface Domicilio  extends DataModel<Domicilio>{
     nroDpto?: number | null;
     localidad: Localidad;
   }
+
+  export interface DomicilioDto  extends DataModel<Domicilio>{
+    calle: string;
+    numero: number;
+    cp: number;
+    piso?: number | null;
+    nroDpto?: number | null;
+    localidadId: number;
+  }

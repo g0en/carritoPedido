@@ -1,5 +1,5 @@
 import DataModel from "./DataModel";
-import Domicilio from "./Domicilio"; // Asumiendo que tienes interfaces definidas para estas entidades
+import Domicilio, { DomicilioDto } from "./Domicilio"; // Asumiendo que tienes interfaces definidas para estas entidades
 import Sucursal from "./Sucursal";
 import Factura from "./Factura";
 import Cliente from "./Cliente";
@@ -26,7 +26,7 @@ export interface PedidoDto extends DataModel<Pedido>{
   estado: Estado;
   tipoEnvio: TipoEnvio | null;
   formaPago: FormaPago | null;
-  domicilio: Domicilio | null; 
+  domicilio: DomicilioDto | null; 
   sucursalId: number; 
   clienteId: number; 
   detallePedidos: DetallePedido[]; 

@@ -52,7 +52,13 @@ export function Carrito() {
         estado: Estado.PENDIENTE,
         tipoEnvio: tipoEnvio,
         formaPago: formaPago,
-        domicilio: null,
+        domicilio: {
+          calle: "Ameghino",
+          numero: 1311,
+          cp: 5501,
+          localidadId: 1,
+          id: null
+        },
         sucursalId: 1,
         clienteId: 1,
         detallePedidos: cart,
