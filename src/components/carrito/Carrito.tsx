@@ -56,13 +56,13 @@ export function Carrito() {
           calle: "Ameghino",
           numero: 1311,
           cp: 5501,
-          localidadId: 1,
+          localidadId: 377,
           id: null
         },
         sucursalId: 1,
         clienteId: 1,
         detallePedidos: cart,
-        empleadoId: 1,
+        empleadoId: 2,
         id: null
       };
 
