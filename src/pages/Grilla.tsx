@@ -1,7 +1,7 @@
 // src/components/Home.tsx
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import 'C:/UTN/carritoPedido/src/assets/Grilla.css';
+import '../assets/Grilla.css';
 import { useNavigate } from 'react-router-dom';
 import { BsPlusSquare } from 'react-icons/bs';
 import { getPedidos } from '../services/PedidoService';
