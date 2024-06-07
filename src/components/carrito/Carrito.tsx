@@ -66,12 +66,14 @@ export function Carrito() {
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (tipoEnvio !== null && formaPago !== null) {
-      save();
-      if(formaPago === FormaPago.MERCADO_PAGO){
-        getPreferenceMP();
-      }
+      await save();
+      setTimeout(() => {
+        if(formaPago === FormaPago.MERCADO_PAGO){
+          getPreferenceMP();
+        }
+      }, 3000);
     } else {
       alert("Seleccione un tipo de envío y una forma de pago antes de finalizar el pedido");
     }
