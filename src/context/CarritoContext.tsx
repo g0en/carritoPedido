@@ -5,9 +5,9 @@ import ArticuloInsumo from '../types/ArticuloInsumo';
 
 interface CartContextType {
   cart: DetallePedido[];
-  addCarrito: (product: ArticuloManufacturado) => void;
-  removeCarrito: (product: ArticuloManufacturado) => void;
-  removeItemCarrito: (product: ArticuloManufacturado) => void;
+  addCarrito: (product: ArticuloManufacturado | ArticuloInsumo) => void;
+  removeCarrito: (product: ArticuloManufacturado | ArticuloInsumo) => void;
+  removeItemCarrito: (product: ArticuloManufacturado | ArticuloInsumo) => void;
   limpiarCarrito: () => void;
   totalPedido: number;
 }
@@ -54,11 +54,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
   };
 
-  const removeCarrito = (product: ArticuloManufacturado) => {
+  const removeCarrito = (product: ArticuloManufacturado | ArticuloInsumo) => {
     setCart(prevCart => prevCart.filter(detalle => detalle.articulo.id !== product.id));
   };
 
-  const removeItemCarrito = (product: ArticuloManufacturado) => {
+  const removeItemCarrito = (product: ArticuloManufacturado | ArticuloInsumo) => {
     setCart(prevCart => {
       const newCart = prevCart.map(detalle => {
         if (detalle.articulo.id === product.id) {

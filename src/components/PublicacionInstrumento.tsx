@@ -3,15 +3,16 @@ import { useCarrito } from "../hooks/useCarrito";
 import { BsCartPlus, BsCartX } from "react-icons/bs";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import ArticuloManufacturado from "../entities/ArticuloManufacturado";
+import ArticuloInsumo from "../types/ArticuloInsumo";
 
 type ArticuloProps = {
-  articulo: ArticuloManufacturado;
+  articulo: ArticuloManufacturado | ArticuloInsumo;
 };
 const PublicacionIntrumento = ({ articulo }: ArticuloProps) => {
 
   const { addCarrito, removeCarrito, cart, removeItemCarrito } = useCarrito()
 
-  const verificarArticuloCarrito = (product: ArticuloManufacturado) => {
+  const verificarArticuloCarrito = (product: ArticuloManufacturado | ArticuloInsumo) => {
     const flag = cart.some(item => String(item.articulo.id) == String(product.id));
     return flag;
   }

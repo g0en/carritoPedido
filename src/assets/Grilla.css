@@ -1,0 +1,42 @@
+.grid-container {
+  padding: 20px;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-header {
+  background-color: #343a40;
+  color: #161212;
+  font-weight: bold;
+}
+
+.grid-item {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: center;
+  margin: 0; /* Eliminar margen para parecerse más a una tabla */
+  flex: 1; /* Asegura que todas las celdas tengan el mismo tamaño */
+}
+
+.grid-item:hover {
+  background-color: #e9ecef;
+}
+
+.grid-container .grid-row:first-child .grid-item {
+  border-top: 0;
+}
+
+.grid-container .grid-row .grid-item:first-child {
+  border-left: 0;
+}
+
+.grid-container .grid-row .grid-item:last-child {
+  border-right: 0;
+}
+
+.grid-container .grid-row:last-child .grid-item {
+  border-bottom: 0;
+}
